@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
-"""
-A module for creating asyncio Tasks that run asynchronous functions.
-"""
+""" The basics of async """
+
 import asyncio
-wait_random = __import__('0-basic_async_syntax').wait_random
+from typing import List
+
+task_wait_random = __import__('3-tasks').task_wait_random
 
 
-def task_wait_random(max_delay: int) -> asyncio.Task:
+async def task_wait_n(n: int, max_delay: int) -> List[float]:
     """
-    Create an asyncio Task that waits for a random amount of time
-    up to `max_delay` seconds when run.
-    Returns the created Task object.
+    spawn task_wait_random n times with the specified max_delay.
     """
-    return asyncio.create_task(wait_random(max_delay))
+    tasks = [task_wait_random(max_delay) for _ in range(n)]
+    return [await task for task in asyncio.as_completed(tasks)]
